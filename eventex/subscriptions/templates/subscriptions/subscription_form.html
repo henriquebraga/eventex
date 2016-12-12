@@ -2,6 +2,26 @@
 <!DOCTYPE html>
 <html>
 	<head>
+        <style>
+            .alert{
+                padding: 15px;
+                margin-bottom: 1rem;
+                border: 1px solid transparent;
+                border-radius: .25rem;
+
+            }
+
+            .alert p {
+                padding: 7px 0 7px;
+
+            }
+
+            .alert.success{
+                color: #3c763d;
+                background-color: #dff0d8;
+                border-color: #d0e9c6;
+            }
+        </style>
         <title>Eventex - O maior encontro hacker do mundo!</title>
 
         <meta charset="utf-8">
@@ -27,7 +47,7 @@
             <header class="header header-inline min-h-3 row desktop-12 container" role="banner">
 
                 <div class="site-logo">
-                    <h1><a href="/" rel="home">Eventex</h1>
+                    <h1><a href="/" rel="home">Eventex</a></h1>
                     <p class="site-description screen-reader-only">O maior encontro hacker do mundo!</p>
                 </div>
 
@@ -50,6 +70,15 @@
         	<div class="content row padding-bottom-3 desktop-12 container">
                 <h1>Formulário de Inscrição</h1>
                 <div class="desktop-6">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert success">
+                                <p>
+                                    {{ message }}
+                                </p>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                     <form action="." method="post">
                         {% csrf_token %}
                         <div class="form-row label-block input-text">
