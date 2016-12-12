@@ -12,3 +12,6 @@ class IndexTest(TestCase):
 
     def test_template(self):
         self.assertTemplateUsed(self.resp, 'index.html')
+
+    def test_subscription_link(self):
+        self.assertContains(self.resp, 'href="/inscricao/')
