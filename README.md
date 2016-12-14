@@ -1,4 +1,5 @@
 
+[![Build Status](https://travis-ci.org/henriquebraga/eventex.svg?branch=master)](https://travis-ci.org/henriquebraga/eventex)
 [![Code Health](https://landscape.io/github/henriquebraga/eventex/master/landscape.svg?style=flat)](https://landscape.io/github/henriquebraga/eventex/master)
 ## Eventex
 
