@@ -1,6 +1,8 @@
 from django.core import mail
 from django.test import TestCase
 from eventex.subscriptions.forms import SubscriptionForm
+from eventex.subscriptions.models import Subscription
+
 
 class SubscribeGet(TestCase):
 
@@ -44,6 +46,7 @@ class SubscribeGet(TestCase):
 
 class SubscribePostValid(TestCase):
     """Tests for subscription POST."""
+
     def setUp(self):
         data = dict(name='Henrique Braga', cpf='12345678901',
                     email='h.braga.albor@gmail.com', phone='988591702')
@@ -58,6 +61,10 @@ class SubscribePostValid(TestCase):
     def test_send_email(self):
         """View must should sent 1 email."""
         self.assertEqual(1, len(mail.outbox))
+
+    def test_save(self):
+        """Subscription must be saved."""
+        self.assertTrue(Subscription.objects.exists())
 
 
 class SubscribePostInvalid(TestCase):
@@ -80,6 +87,9 @@ class SubscribePostInvalid(TestCase):
     def test_form_has_error(self):
         self.assertTrue(self.form.errors)
 
+    def test_dont_save(self):
+        """Subscription must not be saved."""
+        self.assertFalse(Subscription.objects.exists())
 
 class SubscribeSuccessMessage(TestCase):
 
