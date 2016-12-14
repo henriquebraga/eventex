@@ -1,3 +1,5 @@
+
+[![Code Health](https://landscape.io/github/henriquebraga/eventex/master/landscape.svg?style=flat)](https://landscape.io/github/henriquebraga/eventex/master)
 ## Eventex
 
 Sistema de eventos encomendado pela Morena.
