@@ -2,7 +2,7 @@ from django.core import mail
 from django.test import TestCase
 from eventex.subscriptions.forms import SubscriptionForm
 
-class SubscribeTest(TestCase):
+class SubscribeGet(TestCase):
 
     def setUp(self):
         self.resp = self.client.get('/inscricao/')
@@ -17,11 +17,18 @@ class SubscribeTest(TestCase):
 
     def test_html(self):
         """HTML must contains input tags. (1 form, 5 inputs (3 text, 1 email and 1 submit button)"""
-        self.assertContains(self.resp, '<form')
-        self.assertContains(self.resp, '<input', 6)
-        self.assertContains(self.resp, 'type="text"', 3)
-        self.assertContains(self.resp, 'type="email"', 1)
-        self.assertContains(self.resp, 'type="submit"', 1)
+        TAGS = (
+            ('<form', 1),
+            ('<input', 6),
+            ('type="text"', 3),
+            ('type="email', 1),
+            ('type="submit"', 1)
+        )
+
+        for tag, count in TAGS:
+            # Accumulates exceptions. One test- many assertions.
+            with self.subTest():
+                self.assertContains(self.resp, tag, count)
 
     def test_csrf(self):
         """HTML must contain CSRF. """
@@ -32,19 +39,16 @@ class SubscribeTest(TestCase):
         form = self.resp.context['form']
         self.assertIsInstance(form, SubscriptionForm)
 
-    def test_form_has_fields(self):
-        """Form must have 4 fields."""
-        form = self.resp.context['form']
-        self.assertSequenceEqual(['name', 'cpf', 'email', 'phone'], list(form.fields))
 
 
-class SubscribePostTest(TestCase):
+
+class SubscribePostValid(TestCase):
     """Tests for subscription POST."""
     def setUp(self):
         data = dict(name='Henrique Braga', cpf='12345678901',
                     email='h.braga.albor@gmail.com', phone='988591702')
         self.resp = self.client.post('/inscricao/', data) #Conjunto de dados válidos.
-        self.email = mail.outbox[0]
+        self.email = mail.outbox[0] #There's only one e-mail.
 
 
     def test_post(self):
@@ -52,34 +56,11 @@ class SubscribePostTest(TestCase):
         self.assertEqual(302, self.resp.status_code)
 
     def test_send_email(self):
-        """When executing POST, it should send 1 subscription e-mail"""
+        """View must should sent 1 email."""
         self.assertEqual(1, len(mail.outbox))
 
-    def test_email_subject(self):
-        """Email subject should be 'Confirmação de Inscrição'"""
-        expect = 'Confirmação de Inscrição'
-        self.assertEqual(expect, self.email.subject)
 
-    def test_email_from(self):
-        """Email from should be 'contato@eventex.com.br'"""
-        expect = 'contato@eventex.com.br'
-        self.assertEqual(expect, self.email.from_email)
-
-    def test_email_to(self):
-        """Email to (destiny) should be contato@eventex.com.br (where it's going to be managed)
-        and 'h.braga.albor@gmail.com' (who performed the subscription itself)."""
-        expect = ['contato@eventex.com.br', 'h.braga.albor@gmail.com']
-        self.assertEqual(expect, self.email.to)
-
-    def test_email_body(self):
-        """Email body should contain"""
-        self.assertIn('Henrique Braga', self.email.body)
-        self.assertIn('12345678901', self.email.body)
-        self.assertIn('h.braga.albor@gmail.com', self.email.body)
-        self.assertIn('988591702', self.email.body)
-
-
-class SubscribeInvalidPost(TestCase):
+class SubscribePostInvalid(TestCase):
 
     def setUp(self):
         self.resp = self.client.post('/inscricao/', {})
@@ -93,12 +74,8 @@ class SubscribeInvalidPost(TestCase):
         self.assertTemplateUsed(self.resp, 'subscriptions/subscription_form.html')
 
     def test_has_form(self):
+        """Form must be a SubscriptionForm type"""
         self.assertIsInstance(self.form, SubscriptionForm)
-        #self.assertContains(form, '<form')
-        #self.assertContains(form, '<input', 6)
-        #self.assertContains(form, 'type="text"', 3)
-        #self.assertContains(form, 'type="email"', 1)
-        #self.assertContains(form, 'type="submit', 1)
 
     def test_form_has_error(self):
         self.assertTrue(self.form.errors)
