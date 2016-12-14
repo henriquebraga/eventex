@@ -1,7 +1,7 @@
 
+## Eventex
 [![Build Status](https://travis-ci.org/henriquebraga/eventex.svg?branch=master)](https://travis-ci.org/henriquebraga/eventex)
 [![Code Health](https://landscape.io/github/henriquebraga/eventex/master/landscape.svg?style=flat)](https://landscape.io/github/henriquebraga/eventex/master)
-## Eventex
 
 Sistema de eventos encomendado pela Morena.
 
@@ -21,7 +21,7 @@ git clone git@github.com:henriquebraga/eventex.git wttd
 cd wttd
 python -m venv .wttd
 source .wttd/bin/activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 cp contrib/env-sample .env
 python manage.py test
 ```
