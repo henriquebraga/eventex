@@ -13,7 +13,6 @@ class SubscriptionModelTest(TestCase):
 
     def test_create(self):
         """Must create a subscription."""
-
         self.assertTrue(Subscription.objects.exists())
 
     def test_created_at(self):

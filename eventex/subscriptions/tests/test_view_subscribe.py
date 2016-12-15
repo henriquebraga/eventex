@@ -56,7 +56,7 @@ class SubscribePostValid(TestCase):
 
 
     def test_post(self):
-        """Valid POST should redirect to /inscricao/"""
+        """Valid POST should redirect to /inscricao/1/"""
         self.assertRedirects(self.resp, '/inscricao/1/')
 
     def test_send_email(self):
@@ -87,6 +87,7 @@ class SubscribePostInvalid(TestCase):
         self.assertIsInstance(self.form, SubscriptionForm)
 
     def test_form_has_error(self):
+        """Form must have errors."""
         self.assertTrue(self.form.errors)
 
     def test_do_not_save(self):
