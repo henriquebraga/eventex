@@ -78,6 +78,7 @@ class SubscribePostInvalid(TestCase):
         self.assertEqual(200, self.resp.status_code)
 
     def test_template(self):
+        """Must use template subscription_form.html"""
         self.assertTemplateUsed(self.resp, 'subscriptions/subscription_form.html')
 
     def test_has_form(self):
@@ -87,7 +88,7 @@ class SubscribePostInvalid(TestCase):
     def test_form_has_error(self):
         self.assertTrue(self.form.errors)
 
-    def test_dont_save(self):
+    def test_do_not_save(self):
         """Subscription must not be saved."""
         self.assertFalse(Subscription.objects.exists())
 
