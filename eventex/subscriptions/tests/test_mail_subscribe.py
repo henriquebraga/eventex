@@ -35,4 +35,3 @@ class MailSubscribe(TestCase):
         for content in contents:
             with self.subTest():
                 self.assertIn(content, self.email.body)
-

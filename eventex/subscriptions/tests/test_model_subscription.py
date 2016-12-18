@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.test import TestCase
+from eventex.subscriptions.admin import SubscriptionModelAdmin
 from eventex.subscriptions.models import Subscription
 
 class SubscriptionModelTest(TestCase):
@@ -21,10 +22,6 @@ class SubscriptionModelTest(TestCase):
 
     def test_str(self):
         self.assertEqual('Henrique Braga', str(self.obj))
-
-
-
-
 
 
 
