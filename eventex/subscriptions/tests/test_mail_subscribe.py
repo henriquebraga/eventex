@@ -1,12 +1,12 @@
 from django.core import mail
 from django.test import TestCase
-
+from django.shortcuts import resolve_url as r
 
 class MailSubscribe(TestCase):
     def setUp(self):
         data = dict(name='Henrique Braga', cpf='12345678901',
                     email='h.braga.albor@gmail.com', phone='988591702')
-        self.resp = self.client.post('/inscricao/', data) #Conjunto de dados válidos.
+        self.resp = self.client.post(r('subscriptions:new'), data) #Conjunto de dados válidos.
         self.email = mail.outbox[0] #There's only one e-mail.
 
     def test_email_subject(self):

@@ -1,15 +1,15 @@
 from django.conf import settings
 from django.core import mail
 from django.http import HttpResponseRedirect, Http404
-from django.shortcuts import render
+from django.shortcuts import render, resolve_url as r
 from django.template.loader import render_to_string
 from eventex.subscriptions.forms import SubscriptionForm
 from eventex.subscriptions.models import Subscription
 
 
-def subscribe(request):
+def new(request):
     return create(request) \
-        if request.method == 'POST' else new(request)
+        if request.method == 'POST' else empty_form(request)
 
 
 def create(request):
@@ -17,6 +17,11 @@ def create(request):
         return success_subscription(request, form) if form.is_valid() \
             else invalid_subscription(request, form)
 
+
+def empty_form(request):
+    return render(request,
+                  'subscriptions/subscription_form.html',
+                  context={'form': SubscriptionForm()})
 
 def success_subscription(request, form):
         subscription = Subscription.objects.create(**form.cleaned_data)
@@ -26,7 +31,7 @@ def success_subscription(request, form):
                    'subscriptions/subscription_email.txt',
                    {'subscription': subscription})
 
-        return HttpResponseRedirect('/inscricao/{}/'.format(subscription.pk))
+        return HttpResponseRedirect(r('subscriptions:detail', subscription.pk).format(subscription.pk))
 
 
 def invalid_subscription(request, form):
@@ -41,10 +46,7 @@ def _send_mail(subject, from_, to, template_name, context):
                    [from_,
                     to])
 
-def new(request):
-    return render(request,
-                  'subscriptions/subscription_form.html',
-                  context={'form': SubscriptionForm()})
+
 
 def detail(request, pk):
     return render(request,
