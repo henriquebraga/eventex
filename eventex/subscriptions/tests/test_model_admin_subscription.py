@@ -12,13 +12,13 @@ class SubscriptionModelAdminTest(TestCase):
     def test_list_display(self):
         """List display must have the following fields/order:
             name, email, phone, cpf, created_at, subscribed_today"""
-        expected = ('name', 'email', 'phone', 'cpf', 'created_at', 'subscribed_today')
+        expected = ('name', 'email', 'phone', 'cpf', 'created_at', 'subscribed_today', 'paid')
         self.assertSequenceEqual(expected, SubscriptionModelAdmin.list_display)
 
     def test_list_filter(self):
         """List filter must have the following fields/order:
             created_at"""
-        expected = ('created_at',)
+        expected = ('paid', 'created_at', )
         self.assertEqual(expected, SubscriptionModelAdmin.list_filter)
 
     def test_search_fields(self):

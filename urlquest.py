@@ -37,8 +37,6 @@ class LENDConf:
             ]
 
 class MySiteUrlConf:
-
-
     urlpatterns = [
         url(r'^$', index, name='index'),
         url(r'^login/$', auth, kwargs={'action': 'login'}, name='login'), #name=Apelido da rota. Se mudar a callable, retorna o cara certo.
