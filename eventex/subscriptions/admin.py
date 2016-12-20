@@ -11,6 +11,7 @@ class SubscriptionModelAdmin(admin.ModelAdmin):
     search_fields = ('name', 'email', 'phone', 'cpf', 'created_at')
     list_filter = ('paid', 'created_at', )
 
+    actions=['mark_as_paid']
     def subscribed_today(self, obj):
         return obj.created_at == now().date
 
@@ -18,6 +19,16 @@ class SubscriptionModelAdmin(admin.ModelAdmin):
     subscribed_today.boolean = True
 
 
+    def mark_as_paid(self, request, queryset):
+        count = queryset.update(paid=True)
+        if count  == 1:
+            msg = '{} inscrição foi marcada como paga.'
+        else:
+            msg = '{} inscrições foram marcadas como paga.'
+
+        self.message_user(request, msg.format(count))
+
+    mark_as_paid.short_description = 'Marcar como pago'
 
 #SubscriptionModelAdmin intermedia a relação entre o modelo e o admin do Django.
 admin.site.register(Subscription, SubscriptionModelAdmin)
