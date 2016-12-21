@@ -17,3 +17,9 @@ class SubscriptionForm(forms.Form):
     cpf = forms.CharField(label='CPF', validators=[validate_cpf])
     email = forms.EmailField(label='E-mail')
     phone = forms.CharField(label='Telefone')
+
+    def clean_name(self):
+        """Permite você implementar no formulário. Chama como complemento do campo em si.
+        Chama depois do clean do CharField. SEMPRE NECESSÁRIO RETORNAR VALORES VÁLIDOS"""
+        words = [w.capitalize() for w in self.cleaned_data['name'].split()]
+        return ' '.join(words)
