@@ -24,7 +24,8 @@ def empty_form(request):
                   context={'form': SubscriptionForm()})
 
 def success_subscription(request, form):
-        subscription = Subscription.objects.create(**form.cleaned_data)
+        subscription = form.save() #Utilize apenas quando for MUITO próximo.
+        #subscription = Subscription.objects.create(**form.cleaned_data)
         _send_mail('Confirmação de Inscrição',
                   settings.DEFAULT_FROM_EMAIL, #always import form django.conf.settings
                   subscription.email,
