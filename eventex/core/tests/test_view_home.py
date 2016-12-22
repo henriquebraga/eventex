@@ -17,4 +17,19 @@ class IndexTest(TestCase):
         """Page must have link to /inscricao"""
         self.assertContains(self.resp, 'href="{}"'.format(r('subscriptions:new')))
 
+    def test_speakers(self):
+        """Must show keynote speakers"""
+        contents = ['Grace Hopper',
+                    'http://hbn.link/hopper-pic',
+                    'Alan Turing',
+                    'http://hbn.link/turing-pic']
+
+        for expected in contents:
+            with self.subTest():
+                self.assertContains(self.resp, expected)
+
+    def test_speakers_link(self):
+        expected = 'href="{}#speakers"'.format(r('home'))
+        self.assertContains(self.resp, expected)
+
 
