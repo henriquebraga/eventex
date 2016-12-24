@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^$',views.home, name='home'),
     url(r'^admin/', admin.site.urls),
     url(r'^inscricao/', include('eventex.subscriptions.urls', namespace='subscriptions')),
+    url(r'^palestrantes/(?P<slug>[\w-]+)/$', views.speaker_detail, name='speaker_detail')
 
 
 ]
