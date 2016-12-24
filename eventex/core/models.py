@@ -1,6 +1,5 @@
 from django.db import models
 from django.shortcuts import resolve_url as r
-# Create your models here.
 
 class Speaker(models.Model):
     name = models.CharField('nome', max_length=255)
@@ -18,4 +17,26 @@ class Speaker(models.Model):
 
     def get_absolute_url(self):
         return r('speaker_detail', slug=self.slug)
+
+
+class Contact(models.Model):
+    EMAIL = 'E'
+    PHONE = 'P'
+    speaker = models.ForeignKey('Speaker', verbose_name='palestrante') #Sabe previamente os modelos disponíveis.
+    KINDS = (
+               ('E', 'Email'),
+               ('P', 'Telefone'),
+             )
+
+    knd = models.CharField('tipo',max_length=1, choices=KINDS)
+    value = models.CharField('contato',max_length=255)
+
+    class Meta:
+        verbose_name = 'Contato'
+        verbose_name_plural = 'Contatos'
+
+    def __str__(self):
+        return self.value
+
+
 
