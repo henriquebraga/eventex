@@ -1,8 +1,8 @@
 from django.test import TestCase
 from django.shortcuts import resolve_url as r
 # Create your tests here.
-
 class IndexTest(TestCase):
+    fixtures = ['keynotes.json']
 
     def setUp(self):
         self.resp = self.client.get(r('home'))
@@ -19,8 +19,11 @@ class IndexTest(TestCase):
 
     def test_speakers(self):
         """Must show keynote speakers"""
-        contents = ['Grace Hopper',
+        contents = [
+                    'href="{}"'.format(r('speaker_detail', slug='grace-hopper')),
+                    'Grace Hopper',
                     'http://hbn.link/hopper-pic',
+                    'href="{}"'.format(r('speaker_detail', slug='alan-turing')),
                     'Alan Turing',
                     'http://hbn.link/turing-pic']
 
