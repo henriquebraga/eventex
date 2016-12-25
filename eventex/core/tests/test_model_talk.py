@@ -1,5 +1,5 @@
 from django.test import TestCase
-from eventex.core.models import Talk
+from eventex.core.models import Talk, Speaker
 
 
 class TalkModelTest(TestCase):
@@ -41,9 +41,48 @@ class TalkModelTest(TestCase):
         expected = self.talk.title
         self.assertEqual(expected, str(self.talk))
 
+
     def assertFieldsCanBeBlank(self, klass, field_names):
         for field in field_names:
             with self.subTest():
                 field = klass._meta.get_field(field)
                 self.assertTrue(field.blank)
+
+
+class TalkManagerTest(TestCase):
+
+    def setUp(self):
+        talk_morning = Talk.objects.create(
+            title='Palestra com início até 12:00',
+            start='10:00',
+            description='Descrição da Palestra'
+        )
+
+        talk_afternoon = Talk.objects.create(
+            title='Palestras com início depois do 12:00',
+            start='13:00',
+            description='Descrição da Palestra'
+        )
+
+        s1 = Speaker.objects.create(
+            name='Grace Hopper',
+            slug='grace-hopper',
+            photo='http://hbn.link/hopper-pic',
+            website='http://hbn.link/hopper-site',
+            description='Programadora e Almirante'
+        )
+        talk_morning.speakers.add(s1)
+
+    def test_morning(self):
+        qs = Talk.objects.morning()
+        expected = ['Palestra com início até 12:00']
+        self.assertQuerysetEqual(qs, expected, transform=lambda o : o.title)
+
+    def test_afternoon(self):
+        qs = Talk.objects.afternoon()
+        expected = ['Palestras com início depois do 12:00']
+        self.assertQuerysetEqual(qs, expected, transform=lambda o : o.title)
+
+
+
 
