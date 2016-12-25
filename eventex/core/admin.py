@@ -16,14 +16,14 @@ class SpeakerModelAdmin(admin.ModelAdmin):
 
 
     def website_link(self, obj):
-        """Creates a link for field website"""
+        """Creates a link for website field"""
         return '<a href="{0}">{0}</a>'.format(obj.website)
 
     website_link.allow_tags = True
     website_link.short_description = 'website'
 
     def photo_img(self, obj):
-        """Creates a link for field photo"""
+        """Creates a link for photo field."""
         return '<img width =32px src="{}" />'.format(obj.photo)
 
     photo_img.allow_tags = True
