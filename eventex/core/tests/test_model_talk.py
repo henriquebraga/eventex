@@ -7,8 +7,8 @@ class TalkModelTest(TestCase):
     def setUp(self):
         self.talk = Talk.objects.create(
             title='Título da Palestra',
-            start='10:00',
-            description='Descrição da Palestra'
+            #start='10:00',
+            #description='Descrição da Palestra'
         )
 
     def test_create(self):
@@ -29,3 +29,21 @@ class TalkModelTest(TestCase):
         )
 
         self.assertEqual(1, self.talk.speakers.count())
+
+    def test_fields_blank(self):
+        self.assertFieldsCanBeBlank(Talk, ['description', 'speakers', 'start'])
+
+    def test_start_null(self):
+        field = Talk._meta.get_field('start')
+        self.assertTrue(field.null)
+
+    def test_str(self):
+        expected = self.talk.title
+        self.assertEqual(expected, str(self.talk))
+
+    def assertFieldsCanBeBlank(self, klass, field_names):
+        for field in field_names:
+            with self.subTest():
+                field = klass._meta.get_field(field)
+                self.assertTrue(field.blank)
+
