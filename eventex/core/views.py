@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import get_object_or_404
-from eventex.core.models import Speaker, Talk, Course
+from eventex.core.models import Speaker, Talk, CourseOld
 
 
 def home(request):
@@ -15,11 +15,15 @@ def speaker_detail(request, slug):
     return render(request, 'core/speaker_detail.html',{'speaker': speaker})
 
 def talk_list(request):
+    at_morning = list(Talk.objects.morning()) + list(CourseOld.objects.morning())
+    at_morning.sort(key=lambda o : o.start)
+
+    at_afternoon = list(Talk.objects.afternoon()) + list(CourseOld.objects.afternoon())
+    at_afternoon.sort(key=lambda o : o.start)
 
     context = {
-            'morning_talks': Talk.objects.morning(),
-            'afternoon_talks': Talk.objects.afternoon(),
-            'courses': Course.objects.all()
+            'morning_talks': at_morning,
+            'afternoon_talks': at_afternoon,
     }
 
 

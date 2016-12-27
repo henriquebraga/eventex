@@ -54,6 +54,7 @@ class Activity(models.Model):
 
     class Meta:
         abstract = True #AbstractBaseClass
+        ordering = ['start']
         verbose_name_plural = 'palestras'
         verbose_name = 'palestra'
 
@@ -62,6 +63,13 @@ class Activity(models.Model):
 
 class Talk(Activity):
     pass
+
+class CourseOld(Activity):
+    slots = models.IntegerField()
+
+    class Meta:
+        verbose_name_plural = 'cursos'
+        verbose_name = 'curso'
 
 class Course(Activity):
     slots = models.IntegerField()

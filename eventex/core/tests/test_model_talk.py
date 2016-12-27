@@ -1,7 +1,7 @@
 from django.test import TestCase
 
 from eventex.core.managers import StartManager
-from eventex.core.models import Talk, Speaker, Course
+from eventex.core.models import Talk, Speaker, CourseOld, Course
 
 
 class TalkModelTest(TestCase):
@@ -87,6 +87,34 @@ class TalkManagerTest(TestCase):
 
 
 
+class CourseOldModelTest(TestCase):
+
+    def setUp(self):
+        self.course = CourseOld.objects.create(
+            title='Título do Curso',
+            start='09:00',
+            description='Descrição do curso.',
+            slots=20
+        )
+
+    def test_create(self):
+        self.assertTrue(CourseOld.objects.exists())
+
+    def test_has_many_speakers(self):
+        """Test relation between speakers"""
+        self.course.speakers.create(
+            name='Henrique Braga',
+            slug='henrique-braga',
+            website='http://henriquebraga.net'
+        )
+        self.assertEqual(1, self.course.speakers.count())
+
+    def test_str(self):
+        self.assertEqual('Título do Curso', str(self.course))
+
+    def test_manager(self):
+        self.assertIsInstance(CourseOld.objects, StartManager)
+
 class CourseModelTest(TestCase):
 
     def setUp(self):
@@ -114,4 +142,3 @@ class CourseModelTest(TestCase):
 
     def test_manager(self):
         self.assertIsInstance(Course.objects, StartManager)
-

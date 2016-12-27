@@ -1,5 +1,5 @@
 from django.contrib import admin
-from eventex.core.models import Speaker, Contact, Talk, Course
+from eventex.core.models import Speaker, Contact, Talk, CourseOld
 
 
 class ContactInline(admin.TabularInline):
@@ -41,6 +41,7 @@ class SpeakerModelAdmin(admin.ModelAdmin):
     photo_img.allow_tags = True
     photo_img.short_description = 'foto'
 
+
 admin.site.register(Speaker, SpeakerModelAdmin)
 admin.site.register(Talk)
-admin.site.register(Course)
+admin.site.register(CourseOld)
