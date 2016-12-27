@@ -10,6 +10,7 @@ class KindQuerySet(models.QuerySet):
     def phones(self):
         return self.filter(knd=self.model.PHONE)
 
+
 class KindContactManager(models.Manager):
 
     def get_queryset(self):
@@ -29,6 +30,7 @@ class StartQuerySet(models.QuerySet):
 
     def afternoon(self):
         return self.filter(start__gte='12:00')
+
 
 class StartManager(models.Manager):
 

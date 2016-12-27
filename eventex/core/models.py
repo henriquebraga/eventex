@@ -43,18 +43,29 @@ class Contact(models.Model):
     def __str__(self):
         return self.value
 
-class Talk(models.Model):
+class Activity(models.Model):
+    """A 'template model'-like to serve as an abstract base class for Talk and Course."""
     title = models.CharField('título',max_length=200)
     start = models.TimeField('início', blank=True, null=True)
     description = models.TextField('descrição', blank=True)
     speakers = models.ManyToManyField('Speaker', verbose_name='palestrantes', blank=True)
-    objects = StartQuerySet.as_manager()
+    objects = StartManager()
+
+
     class Meta:
+        abstract = True #AbstractBaseClass
         verbose_name_plural = 'palestras'
         verbose_name = 'palestra'
 
     def __str__(self):
         return self.title
 
+class Talk(Activity):
+    pass
 
+class Course(Activity):
+    slots = models.IntegerField()
 
+    class Meta:
+        verbose_name_plural = 'cursos'
+        verbose_name = 'curso'
