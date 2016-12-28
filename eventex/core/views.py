@@ -1,18 +1,18 @@
-from django.http import HttpResponse
-from django.shortcuts import render
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render
+from django.views.generic import DetailView
+from django.views.generic.list import ListView
+
 from eventex.core.models import Speaker, Talk, CourseOld
 
 
-def home(request):
-    speakers = Speaker.objects.all()
+#TemplateResponseMixin: Acumula a responsabilidade de renderizar uma página a partir de um contexto.
+#MultipleObjectMixin: Pega uma coleção de objetos e coloca no contexto. (Deve vir antes do TemplateView)
 
-    return render(request, 'index.html', context={'speakers': speakers })
+#ListView: Trabalha como MultipleObjectMixin e Template View
 
-
-def speaker_detail(request, slug):
-    speaker = get_object_or_404(Speaker, slug=slug)
-    return render(request, 'core/speaker_detail.html',{'speaker': speaker})
+home = ListView.as_view(template_name='index.html', model=Speaker)
+speaker_detail = DetailView.as_view(model=Speaker)
 
 def talk_list(request):
     at_morning = list(Talk.objects.morning()) + list(CourseOld.objects.morning())
@@ -26,5 +26,7 @@ def talk_list(request):
             'afternoon_talks': at_afternoon,
     }
 
-
     return render(request, 'core/talk_list.html', context)
+
+
+#talk_list = ListView.as_view(model=Talk)

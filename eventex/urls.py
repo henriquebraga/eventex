@@ -16,14 +16,13 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 
-from eventex.core import views
-
+from eventex.core.views import home, talk_list, speaker_detail
 
 urlpatterns = [
-    url(r'^$',views.home, name='home'),
+    url(r'^$', home, name='home'),
     url(r'^admin/', admin.site.urls),
     url(r'^inscricao/', include('eventex.subscriptions.urls', namespace='subscriptions')),
-    url(r'^palestrantes/(?P<slug>[\w-]+)/$', views.speaker_detail, name='speaker_detail'),
-    url(r'^palestras/$', views.talk_list, name='talk_list')
+    url(r'^palestrantes/(?P<slug>[\w-]+)/$', speaker_detail, name='speaker_detail'),
+    url(r'^palestras/$', talk_list, name='talk_list')
 
 ]

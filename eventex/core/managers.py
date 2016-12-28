@@ -24,12 +24,13 @@ class KindContactManager(models.Manager):
 
 
 class StartQuerySet(models.QuerySet):
+    MIDDAY= '12:00'
 
     def morning(self):
-        return self.filter(start__lt='12:00')
+        return self.filter(start__lt=self.MIDDAY)
 
     def afternoon(self):
-        return self.filter(start__gte='12:00')
+        return self.filter(start__gte=self.MIDDAY)
 
 
 class StartManager(models.Manager):
@@ -42,3 +43,4 @@ class StartManager(models.Manager):
 
     def afternoon(self):
         return self.get_queryset().afternoon()
+
